@@ -17,7 +17,7 @@ NOAA_CACHE_LAST_MODIFIED=`curl --head "$NOAA_METAR_CACHE_URL" 2> /dev/null | gre
 
 # 何らかの原因でデータ取得に失敗している
 if [ "$NOAA_CACHE_LAST_MODIFIED" == "" ]; then
-  echo `date` "[ERROR]" ": Cannot load METAR cache from NOAA server" >> LOG_FILE_PATH
+  echo `date` "[ERROR]" ": Cannot load METAR cache from NOAA server" >> $LOG_FILE_PATH
   exit 1
 fi
 
