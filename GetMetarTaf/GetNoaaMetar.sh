@@ -13,7 +13,7 @@ DATE_CMD='date'
 cd `dirname $0`
 
 # サーバ上のキャッシュの最終更新時刻をチェックする
-NOAA_CACHE_LAST_MODIFIED=`curl --head "$NOAA_METAR_CACHE_URL" 2> /dev/null | grep "last-modified" | sed -e "s/last-modified: //"`
+NOAA_CACHE_LAST_MODIFIED=`curl --head "$NOAA_METAR_CACHE_URL" 2> /dev/null | grep -i "last-modified" | sed -e "s/last-modified: //"`
 
 # 何らかの原因でデータ取得に失敗している
 if [ "$NOAA_CACHE_LAST_MODIFIED" == "" ]; then
