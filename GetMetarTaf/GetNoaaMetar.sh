@@ -9,15 +9,21 @@ LOG_FILE_PATH='metar_taf.log'
 LOCAL_CACHE_MODIFIED_DATE_RECORD_FILE_NAME='metar_noaa.date.log'
 JP_METAR_CSV='metar_jp.csv'
 DATE_CMD='date'
+ERR_HEAD_LOG_DIR='metar_cache_err_log'
 
 cd `dirname $0`
 
 # サーバ上のキャッシュの最終更新時刻をチェックする
 NOAA_CACHE_LAST_MODIFIED=`curl --head "$NOAA_METAR_CACHE_URL" 2> /dev/null | grep -i "last-modified" | sed -e "s/last-modified: //"`
 
+if [ ! -d $ERR_HEAD_LOG_DIR ]; then
+  mkdir $ERR_HEAD_LOG_DIR
+fi
+
 # 何らかの原因でデータ取得に失敗している
-if [ "$NOAA_CACHE_LAST_MODIFIED" == "" ]; then
+if [ "$NOAA_CACHE_LAST_MODIFIED" != "" ]; then
   echo `date` "[ERROR]" ": Cannot load METAR cache from NOAA server" >> $LOG_FILE_PATH
+  curl --head "$NOAA_METAR_CACHE_URL" > "$ERR_HEAD_LOG_DIR/`date`.log"
   exit 1
 fi
 
