@@ -8,6 +8,7 @@ NOAA_METAR_CACHE_FILE_NAME='metars.cache.csv'
 LOG_FILE_PATH='metar_taf.log'
 LOCAL_CACHE_MODIFIED_DATE_RECORD_FILE_NAME='metar_noaa.date.log'
 JP_METAR_CSV='metar_jp.csv'
+DATE_CMD='date'
 
 cd `dirname $0`
 
@@ -20,7 +21,11 @@ if [ "$NOAA_CACHE_LAST_MODIFIED" == "" ]; then
   exit 1
 fi
 
-NOAA_CACHE_LAST_MODIFIED=`TZ=UTC gdate "+%F %T" -d "$NOAA_CACHE_LAST_MODIFIED"`
+if [ `uname` = 'Darwin' ]; then
+  DATE_CMD='gdate'
+fi
+
+NOAA_CACHE_LAST_MODIFIED=`TZ=UTC $DATE_CMD "+%F %T" -d "$NOAA_CACHE_LAST_MODIFIED"`
 
 # 最終更新が手元のキャッシュと同一であれば、それを採用しない。
 if [ -f "$LOCAL_CACHE_MODIFIED_DATE_RECORD_FILE_NAME" ] && [ "`cat "$LOCAL_CACHE_MODIFIED_DATE_RECORD_FILE_NAME"`" == "$NOAA_CACHE_LAST_MODIFIED" ]; then
