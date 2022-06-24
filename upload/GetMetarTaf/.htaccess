@@ -1,0 +1,3 @@
+<Files ~ "\.csv$">
+  allow from all
+</Files>
