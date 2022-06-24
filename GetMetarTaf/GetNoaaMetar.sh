@@ -21,7 +21,7 @@ fi
 
 # 何らかの原因でデータ取得に失敗している
 if [ "$SOURCE_LAST_MODIFIED" == "" ]; then
-  curl --head "$SOURCE_URL" > "$ERR_HEAD_LOG_DIR/`date`.log"
+  curl --head "$SOURCE_URL" > "$ERR_HEAD_LOG_DIR/`date`.log" 2> /dev/null
   exit 1
 fi
 
