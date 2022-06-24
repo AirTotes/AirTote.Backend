@@ -1,8 +1,8 @@
 #!/bin/bash
 
 DB_FILE_NAME='metar_taf.db'
-IMPORT_CACHE_SQL_FILE_NAME='import_noaa_metar.sql'
-SHOW_RECORDS_CSV_SQL_FILE_NAME='show_jp_metar.sql'
+IMPORT_CACHE_SQL_FILE_NAME='sql/import_noaa_metar.sql'
+SHOW_RECORDS_CSV_SQL_FILE_NAME='sql/show_jp_metar.sql'
 SOURCE_URL='https://aviationweather.gov/adds/dataserver_current/current/metars.cache.csv'
 SOURCE_FILE_NAME='metars.cache.csv'
 LOCAL_CACHE_MODIFIED_DATE_RECORD_FILE_NAME='metar_noaa.date.log'
