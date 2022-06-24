@@ -21,3 +21,9 @@ jobs:
         protocol: ftps
         local-dir: ./upload/
         server-dir: fis-j/
+    - name: chmod remote files
+      run: python3 .github/workflows/chmod_files.py \
+        ${{ secrets.FTP_SERVER_URL }} \
+        ${{ secrets.FTP_USER_NAME }} \
+        ${{ secrets.FTP_PASSWORD }} \
+        '/fis-j'
