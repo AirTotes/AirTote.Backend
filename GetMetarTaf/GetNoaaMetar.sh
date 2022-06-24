@@ -5,7 +5,6 @@ IMPORT_NOAA_METAR_CACHE_SQL_FILE_NAME='import_noaa_metar.sql'
 SHOW_JP_METAR_SQL_FILE_NAME='show_jp_metar.sql'
 NOAA_METAR_CACHE_URL='https://aviationweather.gov/adds/dataserver_current/current/metars.cache.csv'
 NOAA_METAR_CACHE_FILE_NAME='metars.cache.csv'
-LOG_FILE_PATH='metar_taf.log'
 LOCAL_CACHE_MODIFIED_DATE_RECORD_FILE_NAME='metar_noaa.date.log'
 JP_METAR_CSV='metar_jp.csv'
 DATE_CMD='date'
@@ -22,7 +21,6 @@ fi
 
 # 何らかの原因でデータ取得に失敗している
 if [ "$NOAA_CACHE_LAST_MODIFIED" == "" ]; then
-  echo `date` "[ERROR]" ": Cannot load METAR cache from NOAA server" >> $LOG_FILE_PATH
   curl --head "$NOAA_METAR_CACHE_URL" > "$ERR_HEAD_LOG_DIR/`date`.log"
   exit 1
 fi
