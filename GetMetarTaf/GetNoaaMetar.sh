@@ -21,7 +21,7 @@ if [ ! -d $ERR_HEAD_LOG_DIR ]; then
 fi
 
 # 何らかの原因でデータ取得に失敗している
-if [ "$NOAA_CACHE_LAST_MODIFIED" != "" ]; then
+if [ "$NOAA_CACHE_LAST_MODIFIED" == "" ]; then
   echo `date` "[ERROR]" ": Cannot load METAR cache from NOAA server" >> $LOG_FILE_PATH
   curl --head "$NOAA_METAR_CACHE_URL" > "$ERR_HEAD_LOG_DIR/`date`.log"
   exit 1
