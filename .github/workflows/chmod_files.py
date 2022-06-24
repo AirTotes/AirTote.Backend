@@ -16,9 +16,9 @@ def chmod_recursive(ftp: FTP_TLS, path: str):
         ftp.sendcmd('SITE CHMOD 604 ' + path_to_file)
 
 with FTP_TLS(
-    host=argv[2],
-    user=argv[3],
-    passwd=argv[4]
+    host=argv[1],
+    user=argv[2],
+    passwd=argv[3]
 ) as ftp:
   ftp.prot_p()
-  chmod_recursive(ftp, argv[5])
+  chmod_recursive(ftp, argv[4])
