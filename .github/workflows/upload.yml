@@ -3,6 +3,8 @@ name: Upload files
 on:
   push:
     branches: [ main ]
+    paths:
+    - upload/**
 
 jobs:
   build:
