@@ -1,7 +1,7 @@
 DROP TABLE IF EXISTS taf_noaa_tmp;
 CREATE TABLE taf_noaa_tmp(
-  raw_text TEXT,
   station_id TEXT,
+  raw_text TEXT,
   issue_time TEXT
 );
 

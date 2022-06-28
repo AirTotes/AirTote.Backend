@@ -3,53 +3,26 @@
 DB_FILE_NAME='metar_taf.db'
 IMPORT_CACHE_SQL_FILE_NAME='sql/import_noaa_taf.sql'
 SHOW_RECORDS_CSV_SQL_FILE_NAME='sql/show_jp_taf.sql'
-SOURCE_URL='https://aviationweather.gov/adds/dataserver_current/current/tafs.cache.csv'
+SOURCE_URL='https://aviationweather.gov/adds/dataserver_current/httpparam?dataSource=tafs&requestType=retrieve&format=xml&stationString=~jp&hoursBeforeNow=0.4&timeType=issue&mostRecentForEachStation=true&fields=station_id,raw_text,issue_time'
 SOURCE_FILE_NAME='tafs.cache.csv'
-LOCAL_CACHE_MODIFIED_DATE_RECORD_FILE_NAME='taf_noaa.date.log'
+XML_TO_CSV_PY_FILE_NAME='parse_xml_to_csv.py'
 OUTPUT_CSV_FILE_NAME='taf_jp.csv'
-DATE_CMD='date'
-ERR_HEAD_LOG_DIR='taf_cache_err_log'
-MINIMIZE_PY='minimize.py'
 
 cd `dirname $0`
 
-# サーバ上のキャッシュの最終更新時刻をチェックする
-SOURCE_LAST_MODIFIED=`curl --head "$SOURCE_URL" 2> /dev/null | grep -i "last-modified" | sed -e "s/last-modified: //i"`
-
-if [ ! -d $ERR_HEAD_LOG_DIR ]; then
-  mkdir $ERR_HEAD_LOG_DIR
-fi
-
-# 何らかの原因でデータ取得に失敗している
-if [ "$SOURCE_LAST_MODIFIED" == "" ]; then
-  curl --head "$SOURCE_URL" > "$ERR_HEAD_LOG_DIR/`date`.log" 2> /dev/null
-  exit 1
-fi
-
-if [ `uname` = 'Darwin' ]; then
-  DATE_CMD='gdate'
-fi
-
-SOURCE_LAST_MODIFIED=`TZ=UTC $DATE_CMD "+%F %T" -d "$SOURCE_LAST_MODIFIED"`
-
-# 最終更新が手元のキャッシュと同一であれば、それを採用しない。
-if [ -f "$LOCAL_CACHE_MODIFIED_DATE_RECORD_FILE_NAME" ] && [ "`cat "$LOCAL_CACHE_MODIFIED_DATE_RECORD_FILE_NAME"`" == "$SOURCE_LAST_MODIFIED" ]; then
-  exit 0;
-fi
-
-# 最後の改行なしで、リモートのファイル編集時刻をキャッシュする
-echo -n "$SOURCE_LAST_MODIFIED" > $LOCAL_CACHE_MODIFIED_DATE_RECORD_FILE_NAME
-
-# キャッシュをサーバから取得
-# 先頭の不要な行を削除する
-# CSVファイルが大きすぎるため、カラム数を減らす
-curl "$SOURCE_URL" 2> /dev/null | sed '1,6d' | python3 $MINIMIZE_PY > $SOURCE_FILE_NAME
-
+# データをサーバから取得
+# XMLからcsvに変換しておく
 # NOAAのキャッシュから、手元のキャッシュを更新するコード
+curl "$SOURCE_URL" 2> /dev/null | python $XML_TO_CSV_PY_FILE_NAME "TAF" "issue_time" > $SOURCE_FILE_NAME
+
 sqlite3 $DB_FILE_NAME < $IMPORT_CACHE_SQL_FILE_NAME
 
 # 現在のTAFをcsvに書き出す
-sqlite3 $DB_FILE_NAME < $SHOW_RECORDS_CSV_SQL_FILE_NAME > $OUTPUT_CSV_FILE_NAME
+sqlite3 $DB_FILE_NAME < $SHOW_RECORDS_CSV_SQL_FILE_NAME > $SOURCE_FILE_NAME
 
-# NOAAから取得したTAFのcsvを削除する
-rm -f "$SOURCE_FILE_NAME"
+if [ `diff $SOURCE_FILE_NAME $OUTPUT_CSV_FILE_NAME | wc -l` == "0" ]; then
+  # NOAAから取得したTAFのcsvを削除する
+  rm -f "$SOURCE_FILE_NAME"
+else
+  mv $SOURCE_FILE_NAME $OUTPUT_CSV_FILE_NAME
+fi
