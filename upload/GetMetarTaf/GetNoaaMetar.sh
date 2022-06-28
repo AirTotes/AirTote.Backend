@@ -20,7 +20,7 @@ sqlite3 $DB_FILE_NAME < $IMPORT_CACHE_SQL_FILE_NAME
 # 現在のMETARをcsvに書き出す
 sqlite3 $DB_FILE_NAME < $SHOW_RECORDS_CSV_SQL_FILE_NAME > $SOURCE_FILE_NAME
 
-if [ `diff $SOURCE_FILE_NAME $OUTPUT_CSV_FILE_NAME | wc -l` == "0" ]; then
+if [ -f $OUTPUT_CSV_FILE_NAME ] && [ `diff $SOURCE_FILE_NAME $OUTPUT_CSV_FILE_NAME | wc -l` == "0" ]; then
   # NOAAから取得したMETARのcsvを削除する
   rm -f "$SOURCE_FILE_NAME"
 else
