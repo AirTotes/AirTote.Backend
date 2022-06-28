@@ -1,51 +1,8 @@
 DROP TABLE IF EXISTS metar_noaa_tmp;
 CREATE TABLE metar_noaa_tmp(
-  raw_text TEXT,
   station_id TEXT,
-  observation_time TEXT,
-  latitude REAL,
-  longitude REAL,
-  temp_c INTEGER,
-  dewpoint_c INTEGER,
-  wind_dir_degrees INTEGER,
-  wind_speed_kt INTEGER,
-  wind_gust_kt INTEGER,
-  visibility_statute_mi REAL,
-  altim_in_hg REAL,
-  sea_level_pressure_mb REAL,
-  corrected TEXT,
-  "auto" TEXT,
-  auto_station TEXT,
-  maintenance_indicator_on TEXT,
-  no_signal TEXT,
-  lightning_sensor_off TEXT,
-  freezing_rain_sensor_off TEXT,
-  present_weather_sensor_off TEXT,
-  wx_string TEXT,
-
-  sky_cover_1 TEXT,
-  cloud_base_ft_agl_1 INTEGER,
-  sky_cover_2 TEXT,
-  cloud_base_ft_agl_2 INTEGER,
-  sky_cover_3 TEXT,
-  cloud_base_ft_agl_3 INTEGER,
-  sky_cover_4 TEXT,
-  cloud_base_ft_agl_4 INTEGER,
-
-  flight_category TEXT,
-  three_hr_pressure_tendency_mb REAL,
-  maxT_c REAL,
-  minT_c REAL,
-  maxT24hr_c REAL,
-  minT24hr_c REAL,
-  precip_in REAL,
-  pcp3hr_in REAL,
-  pcp6hr_in REAL,
-  pcp24hr_in REAL,
-  snow_in TEXT,
-  vert_vis_ft INTEGER,
-  metar_type TEXT,
-  elevation_m TEXT
+  raw_text TEXT,
+  observation_time TEXT
 );
 
 .mode csv
