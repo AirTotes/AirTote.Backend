@@ -6,22 +6,32 @@ on:
     paths:
     - upload/**
 
-jobs:
-  build:
+env:
+  LOCAL_TARGET_DIR: ./upload
+  REMOTE_TARGET_DIR: web/airtote-d/
+  SSH_PRIVATE_KEY_FILE: private.key
 
-    runs-on: [self-hosted, FIS-J, lolipop]
+jobs:
+  deploy:
+
+    runs-on: ubuntu-latest
 
     steps:
     - uses: actions/checkout@v3
 
+    - name: chmod normal files
+      run: find ${{ env.LOCAL_TARGET_DIR }} -type f -not -name '*.sh' -exec chmod 604 {} ';'
+    - name: chmod executable files
+      run: find ${{ env.LOCAL_TARGET_DIR }} -type f -name '*.sh' -exec chmod 704 {} ';'
+
+    - name: set private key value
+      run: echo "$SSH_PRIVATE_KEY" > ${{ env.SSH_PRIVATE_KEY_FILE }}
+      env:
+        SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+
     - name: Upload files
-      uses: SamKirkland/FTP-Deploy-Action@4.3.0
-      with:
-        server: ${{ secrets.FTP_SERVER_URL }}
-        username: ${{ secrets.FTP_USER_NAME }}
-        password: ${{ secrets.FTP_PASSWORD }}
-        protocol: ftps
-        local-dir: ./upload/
-        server-dir: fis-j/
-    - name: chmod remote files
-      run: python3 .github/workflows/chmod_files.py ${{ secrets.FTP_SERVER_URL }} ${{ secrets.FTP_USER_NAME }} ${{ secrets.FTP_PASSWORD }} '/fis-j'
+      run: >
+        rsync -av
+        -e "ssh -i ${{ env.SSH_PRIVATE_KEY_FILE }} ${{ secrets.SSH_PORT_OPT_ARG }}"
+        ${{ env.LOCAL_TARGET_DIR }}/
+        ${{ secrets.SSH_USER_NAME }}@ssh.lolipop.jp:${{ env.REMOTE_TARGET_DIR }}
