@@ -1,7 +1,7 @@
 #!/bin/sh
 
-GET_METAR_SH='GetNoaaMetar.sh'
-GET_TAF_SH='GetNoaaTaf.sh'
+GET_METAR_SH='GetMetarTaf/GetNoaaMetar.sh'
+GET_TAF_SH='GetMetarTaf/GetNoaaTaf.sh'
 
 export LANG=en_US.utf8
 
