@@ -28,6 +28,8 @@ jobs:
       run: echo "$SSH_PRIVATE_KEY" > ${{ env.SSH_PRIVATE_KEY_FILE }}
       env:
         SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+    - name: change permissions of SSH_PRIVATE_KEY_FILE
+      run: chmod 600 ${{ env.SSH_PRIVATE_KEY_FILE }}
 
     - name: Upload files
       run: >
