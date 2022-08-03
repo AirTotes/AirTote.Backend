@@ -5,6 +5,7 @@ on:
     branches: [ main ]
     paths:
     - upload/**
+  workflow_dispatch:
 
 env:
   LOCAL_TARGET_DIR: ./upload
