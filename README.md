@@ -8,5 +8,5 @@
 
 cronで5分ごとにキャッシュを更新するようにしています。
 
-- Cached METAR: https://fis-j.technotter.com/GetMetarTaf/metar_jp.csv
-- Cached TAF: https://fis-j.technotter.com/GetMetarTaf/taf_jp.csv
+- Cached METAR: https://d.airtote.jp/GetMetarTaf/metar_jp.csv
+- Cached TAF: https://d.airtote.jp/GetMetarTaf/taf_jp.csv
