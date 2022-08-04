@@ -1,7 +1,7 @@
 import csv
 from dataclasses import dataclass
 from sys import stdin, stdout, argv
-from typing import TextIO, Tuple
+from typing import TextIO, Tuple, List
 from xml.etree import ElementTree
 
 @dataclass
@@ -15,7 +15,7 @@ class csv_columns:
   def toTuple(self) -> Tuple[str, str, str]:
     return (self.station_id, self.raw_text, self.effected_date)
 
-def parse(src: TextIO, target_elem_name: str, effected_date_elem_name: str) -> list[csv_columns]:
+def parse(src: TextIO, target_elem_name: str, effected_date_elem_name: str) -> List[csv_columns]:
   METARs = ElementTree.parse(src).getroot().find("data").findall(target_elem_name)
 
   return [
@@ -25,9 +25,9 @@ def parse(src: TextIO, target_elem_name: str, effected_date_elem_name: str) -> l
       metar.find(effected_date_elem_name).text
     ) for metar in METARs]
 
-def toArrArr(self: list[csv_columns]) -> list[list]:
+def toArrArr(self: List[csv_columns]) -> List[list]:
   return [row.toArr() for row in self]
-def toTupleArr(self: list[csv_columns]) -> list[Tuple[str, str, str]]:
+def toTupleArr(self: List[csv_columns]) -> List[Tuple[str, str, str]]:
   return [row.toTuple() for row in self]
 
 if __name__ == '__main__':
