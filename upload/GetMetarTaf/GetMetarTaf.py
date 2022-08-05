@@ -42,7 +42,7 @@ def Q_COUNT_UPDATED_ROWS(table_name: str) -> str:
 def update_db_rows(cnx: MySQLConnection, src_url: str, data_name: str, effect_time_elem_name: str) -> int:
   parse_result = parse_xml_to_csv.parse(urlopen(src_url), data_name, effect_time_elem_name)
 
-  CURRENT_TIME = datetime.now()
+  CURRENT_TIME = datetime.utcnow()
   TABLE_NAME = data_name.lower()
   with closing(cnx.cursor()) as cursor:
     cursor.execute(Q_CREATE_MAIN_TABLE(TABLE_NAME))
