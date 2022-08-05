@@ -77,7 +77,6 @@ def main(src_url: str, data_name: str, effect_time_elem_name: str, csv_file_name
 
     updated_row_count = update_db_rows(cnx, src_url, data_name, effect_time_elem_name)
 
-    print(updated_row_count)
     if updated_row_count <= 0:
       return
 
