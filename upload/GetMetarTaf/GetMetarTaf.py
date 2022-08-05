@@ -6,7 +6,9 @@ import parse_xml_to_csv
 from csv import DictWriter
 from datetime import datetime
 
-METAR_SOURCE_URL = 'https://aviationweather.gov/adds/dataserver_current/httpparam?dataSource=metars&requestType=retrieve&format=xml&stationString=~jp&hoursBeforeNow=0.4&mostRecentForEachStation=true&fields=station_id,raw_text,observation_time'
+SOURCE_URL_BASE = 'https://aviationweather.gov/adds/dataserver_current/httpparam?&requestType=retrieve&format=xml&stationString=~jp&hoursBeforeNow=0.4&mostRecentForEachStation=true'
+METAR_SOURCE_URL = f'{SOURCE_URL_BASE}&dataSource=metars&fields=station_id,raw_text,observation_time'
+TAF_SOURCE_URL = f'{SOURCE_URL_BASE}&dataSource=tafs&timeType=issue&fields=station_id,raw_text,issue_time'
 
 COL_STATION_ID = 'station_id'
 COL_RAW_TEXT = 'raw_text'
@@ -87,3 +89,4 @@ def main(src_url: str, data_name: str, effect_time_elem_name: str, csv_file_name
 
 if __name__ == '__main__':
   main(METAR_SOURCE_URL, "METAR", "observation_time", "metar_jp.csv")
+  main(TAF_SOURCE_URL, "TAF", "issue_time", "taf_jp.csv")
