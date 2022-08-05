@@ -10,3 +10,17 @@ cronで5分ごとにキャッシュを更新するようにしています。
 
 - Cached METAR: https://d.airtote.jp/GetMetarTaf/metar_jp.csv
 - Cached TAF: https://d.airtote.jp/GetMetarTaf/taf_jp.csv
+
+## 設定ファイル
+
+`~/.airtote.backend/config.ini`に配置されることを想定しています
+
+以下にサンプルを示します
+
+```config.ini:ini
+[mysql]
+db_name = xxx
+db_host = xxx.xxx.xxx.xxx
+db_user = xxx
+db_password = xxx
+```

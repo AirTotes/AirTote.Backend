@@ -1,5 +1,6 @@
 *.csv
 *.db
+*.ini
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
